@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索</title>
+    {% load staticfiles %}
+    <link href="{% static "search/css/bootstrap.min.css" %}" rel="stylesheet">
+    <script src="{% static "search/js/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "search/js/bootstrap.min.js" %}"></script>
+    <style type="text/css">
+        #re{
+            border: 1px solid #666666;
+            border-top: none;
+            width: 500px;
+            margin: 0 auto;
+            padding: 2px;
+            display: none;
+            list-style: none;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+                $("#searchinput").on("input",function(){
+                    $("#re").html("");
+                    $("#re").css("display","none");
+                    var url = "search?s=" + jQuery.trim($("#searchinput").val());
+                    if(jQuery.trim($("#searchinput").val()) != ''){
+                        $.get(url ,function(data){
+                        var obj = jQuery.parseJSON(data);
+                        $("#re").html("");
+                        $.each(obj,function(n,value){
+                            $("#re").append("<li>" + value + "</li>");
+                        });
+                        $("#re").css("display","block");
+                    });
+                    }
+            });
+        });
+    </script>
+</head>
+<body>
+<div style="padding: 100px 100px 10px;">
+     <div style="width: 500px; margin: 0 auto;">
+        <div class="input-group">
+           <input type="text" class="form-control" id="searchinput">
+           <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                 Go!
+              </button>
+           </span>
+        </div>
+     </div>
+    <ul id="re">
+    </ul>
+</div>
+</body>
+</html>
